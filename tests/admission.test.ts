@@ -16,8 +16,12 @@ beforeAll(() => {
 const VALID_REQUEST: Record<string, unknown> = {
   saglikTesisKodu: 1,
   hastaTCKimlikNo: "SYNTHETIC_TC_000000001",
+  sigortaliTuru: "1",
+  devredilenKurum: "1",
+  provizyonTarihi: "2026-11-18",
   provizyonTipi: "N",
   tedaviTuru: "A",
+  tedaviTipi: "0",
   takipTipi: "N",
   bransKodu: "1",
   doktorTescilNo: "SYNTHETIC_DOCTOR_001",

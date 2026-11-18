@@ -5,7 +5,6 @@
  * by convention (entity names are known workflow artifacts, identifier
  * names are generated values like hastaBasvuruNo).
  */
-import { readFileSync } from "node:fs";
 
 const IDENTIFIER_NAMES = new Set([
   "hastaBasvuruNo",
@@ -21,6 +20,7 @@ const IDENTIFIER_NAMES = new Set([
 export class EpisodeState {
   readonly entities: Map<string, string> = new Map();
   readonly identifiers: Map<string, string> = new Map();
+  private counter = 0;
 
   applyCreates(creates: string[], generates: string[]): void {
     for (const name of creates) {
@@ -28,7 +28,11 @@ export class EpisodeState {
     }
     for (const name of generates) {
       if (!IDENTIFIER_NAMES.has(name)) continue;
-      this.identifiers.set(name, `SYNTHETIC_${name.toUpperCase()}_000001`);
+      this.counter += 1;
+      this.identifiers.set(
+        name,
+        `SYNTHETIC_${name.toUpperCase()}_${String(this.counter).padStart(6, "0")}`,
+      );
     }
   }
 
