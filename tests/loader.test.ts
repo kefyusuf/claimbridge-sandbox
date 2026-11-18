@@ -12,7 +12,7 @@ beforeAll(() => {
 
 describe("bundle loader (sandbox M0)", () => {
   it("loads the spec bundle with all seven collections", () => {
-    expect(bundle.specVersion).toBe("0.3.0");
+    expect(bundle.specVersion).toBe("0.4.0");
     expect(bundle.services).toHaveLength(3);
     expect(bundle.methods).toHaveLength(25);
     expect(bundle.dvos).toHaveLength(70);
