@@ -37,7 +37,7 @@ describe("sandbox admission processor (M1)", () => {
   });
 
   it("rejects a request missing a required DVO field", () => {
-    const incomplete = { ...VALID_REQUEST };
+    const incomplete: Record<string, unknown> = { ...VALID_REQUEST };
     delete incomplete["hastaTCKimlikNo"];
     const result = sandbox.call(
       "medula.hastane.hasta-kabul.hasta-kabul",
