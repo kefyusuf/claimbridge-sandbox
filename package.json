@@ -1,0 +1,19 @@
+{
+  "name": "claimbridge-sandbox",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Stateful sandbox emulating the MEDULA-compatible claim flow defined by claimbridge-medula-spec — loads the published bundle, no live SGK connection.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "sync-bundle": "node scripts/sync-bundle.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  }
+}
