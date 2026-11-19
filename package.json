@@ -12,10 +12,11 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "format:check": "prettier --check src tests",
-    "format": "prettier --write src tests",
-    "validate": "pnpm run typecheck && pnpm run format:check",
+    "format:check": "prettier --check src tests scripts",
+    "format": "prettier --write src tests scripts",
+    "validate": "pnpm run typecheck && pnpm format:check",
     "check": "pnpm run validate && pnpm run test",
+    "serve": "node scripts/serve.mjs",
     "sync-bundle": "node scripts/sync-bundle.mjs"
   },
   "devDependencies": {

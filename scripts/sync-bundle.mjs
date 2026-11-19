@@ -16,4 +16,6 @@ if (!res.ok) {
 const body = await res.text();
 JSON.parse(body); // fail fast on invalid JSON
 writeFileSync("fixtures/bundle.json", body);
-console.log(`sync-bundle: ${body.length} bytes written to fixtures/bundle.json`);
+console.log(
+  `sync-bundle: ${body.length} bytes written to fixtures/bundle.json`,
+);

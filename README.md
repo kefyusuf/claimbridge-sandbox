@@ -27,7 +27,24 @@ for the full handoff.
 pnpm install
 pnpm test
 pnpm sync-bundle   # refresh the pinned spec bundle from the spec repo release
+pnpm serve         # start the session-based HTTP service on 127.0.0.1:8123
 ```
+
+## HTTP service (S2)
+
+`pnpm serve` starts a session-based HTTP layer over the router (plain
+`node:http`, zero additional dependencies; node >= 22.18 or >= 23.6 for
+native type stripping):
+
+```
+POST   /sessions            → { "sessionId": "S000001" }
+POST   /sessions/:id/call   → { methodId, request, scenarioId? } → CallResult JSON
+DELETE /sessions/:id        → 204
+```
+
+Each session owns one `EpisodeState` — episode state persists across calls
+within a session, enabling full claim flows over HTTP. Unknown session → 404
+`SANDBOX_1001`; bad JSON / unknown method → 400 `SANDBOX_BAD_REQUEST`.
 
 ## Bundle sync
 
