@@ -10,10 +10,16 @@
   },
   "scripts": {
     "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "format:check": "prettier --check src tests",
+    "format": "prettier --write src tests",
+    "validate": "pnpm run typecheck && pnpm run format:check",
+    "check": "pnpm run validate && pnpm run test",
     "sync-bundle": "node scripts/sync-bundle.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
+    "prettier": "^3.3.0",
     "typescript": "^5.6.0",
     "vitest": "^3.0.0"
   }
