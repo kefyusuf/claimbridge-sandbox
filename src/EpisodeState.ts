@@ -6,7 +6,7 @@
  * names are generated values like hastaBasvuruNo).
  */
 
-const IDENTIFIER_NAMES = new Set([
+export const IDENTIFIER_NAMES: ReadonlySet<string> = new Set([
   "hastaBasvuruNo",
   "takipNo",
   "islemSiraNo",
