@@ -83,7 +83,17 @@ export class RulesLayer {
         }
         return null;
       }
-      // No sandbox handler for this rule id yet (e.g. M3 invoice rules).
+      // invoice-rule (PRD 15.5): a second invoice for the same patient
+      // application flow must fail and leave no duplicate invoice state.
+      case "duplicate-invoice-rejected":
+        if (state.entities.has("invoiceRecord")) {
+          return {
+            sonucKodu: "SANDBOX_3001",
+            sonucMesaji: "Bu basvuru icin fatura zaten olusturulmus.",
+          };
+        }
+        return null;
+      // No sandbox handler for this rule id yet.
       default:
         return null;
     }

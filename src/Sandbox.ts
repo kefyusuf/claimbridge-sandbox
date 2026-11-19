@@ -21,6 +21,21 @@ const READ_LABELS: Record<string, string> = {
   takip: "Takip",
   serviceRecord: "Hizmet kaydi",
   patientAdmission: "Hasta basvurusu",
+  invoiceRecord: "Fatura",
+};
+
+/**
+ * Scenario-contract-specific precondition codes: when a bundle scenario
+ * pins a distinct SANDBOX_* code for a (method, missing entity) pair
+ * (sandbox PRD §15.4), that contract wins over the generic SANDBOX_1001.
+ */
+const PRECONDITION_CODES: Record<string, Record<string, CallResult>> = {
+  "medula.hastane.fatura-kayit.fatura-kayit": {
+    serviceRecord: {
+      sonucKodu: "SANDBOX_2001",
+      sonucMesaji: "Kayitli hizmet bulunamadi.",
+    },
+  },
 };
 
 export class Sandbox {
@@ -129,9 +144,12 @@ export class Sandbox {
     const effects = method["stateEffects"] as
       Record<string, string[]> | undefined;
     const reads = effects?.["reads"] ?? [];
+    const methodId = method["id"] as string;
     for (const name of reads) {
       if (IDENTIFIER_NAMES.has(name)) continue;
       if (this.state.entities.has(name)) continue;
+      const override = PRECONDITION_CODES[methodId]?.[name];
+      if (override) return override;
       return {
         sonucKodu: "SANDBOX_1001",
         sonucMesaji: `${READ_LABELS[name] ?? name} bulunamadi.`,
