@@ -4,7 +4,8 @@
  * effects, and replays scenario contracts.
  */
 import { loadBundle, type Bundle } from "./loadBundle.js";
-import { EpisodeState } from "./EpisodeState.js";
+import { EpisodeState, IDENTIFIER_NAMES } from "./EpisodeState.js";
+import { RulesLayer } from "./RulesLayer.js";
 
 export interface CallResult {
   sonucKodu: string;
@@ -15,13 +16,22 @@ export interface CallResult {
 type Method = Record<string, unknown>;
 type DvoField = Record<string, unknown>;
 
+/** Readable labels for entity names surfaced in read-precondition errors. */
+const READ_LABELS: Record<string, string> = {
+  takip: "Takip",
+  serviceRecord: "Hizmet kaydi",
+  patientAdmission: "Hasta basvurusu",
+};
+
 export class Sandbox {
   private bundle: Bundle;
   private state: EpisodeState;
+  private rules: RulesLayer;
 
   constructor(bundle: Bundle, state: EpisodeState) {
     this.bundle = bundle;
     this.state = state;
+    this.rules = new RulesLayer(bundle.rules);
   }
 
   call(
@@ -41,7 +51,19 @@ export class Sandbox {
       if (error) return error;
     }
 
-    // 2. Simulate timeout when the request flags it (service-timeout scenario).
+    // 2. Apply the bundle's rules layer for this method (state-transition
+    //    and conditional-required-field rules; SANDBOX_1001 for missing
+    //    takip state per PRD 15.2).
+    const ruleError = this.rules.checkBefore(methodId, request, this.state);
+    if (ruleError) return ruleError;
+
+    // 3. Enforce read preconditions from state effects: every non-identifier
+    //    name in `reads` must exist as an entity (service records and takips
+    //    cannot be read or cancelled before they are created).
+    const readError = this.checkReadPreconditions(method);
+    if (readError) return readError;
+
+    // 4. Simulate timeout when the request flags it (service-timeout scenario).
     if (request["simulateTimeout"] === true) {
       return {
         sonucKodu: "SANDBOX_TIMEOUT",
@@ -49,23 +71,19 @@ export class Sandbox {
       };
     }
 
-    // 3. Apply workflow state effects.
+    // 5. Apply workflow state effects.
     this.applyEffects(method);
 
-    // 4. Build the success response from the generated identifiers.
-    return this.buildSuccessResponse(method);
+    // 6. Build the success response from the generated identifiers.
+    return this.buildSuccessResponse(method, request);
   }
 
   private resolveMethod(methodId: string): Method | undefined {
-    return this.bundle.methods.find(
-      (m: Method) => m["id"] === methodId,
-    );
+    return this.bundle.methods.find((m: Method) => m["id"] === methodId);
   }
 
   private resolveDvo(dvoId: string): Method | undefined {
-    return this.bundle.dvos.find(
-      (d: Method) => d["id"] === dvoId,
-    );
+    return this.bundle.dvos.find((d: Method) => d["id"] === dvoId);
   }
 
   private resolveInputDvoId(method: Method): string | null {
@@ -97,13 +115,35 @@ export class Sandbox {
   }
 
   private applyEffects(method: Method): void {
-    const effects = method["stateEffects"] as Record<string, string[]> | undefined;
+    const effects = method["stateEffects"] as
+      Record<string, string[]> | undefined;
     if (!effects) return;
-    this.state.applyCreates(effects["creates"] ?? [], effects["generates"] ?? []);
+    this.state.applyCreates(
+      effects["creates"] ?? [],
+      effects["generates"] ?? [],
+    );
     this.state.applyDeletes(effects["deletes"] ?? []);
   }
 
-  private buildSuccessResponse(method: Method): CallResult {
+  private checkReadPreconditions(method: Method): CallResult | null {
+    const effects = method["stateEffects"] as
+      Record<string, string[]> | undefined;
+    const reads = effects?.["reads"] ?? [];
+    for (const name of reads) {
+      if (IDENTIFIER_NAMES.has(name)) continue;
+      if (this.state.entities.has(name)) continue;
+      return {
+        sonucKodu: "SANDBOX_1001",
+        sonucMesaji: `${READ_LABELS[name] ?? name} bulunamadi.`,
+      };
+    }
+    return null;
+  }
+
+  private buildSuccessResponse(
+    method: Method,
+    request: Record<string, unknown>,
+  ): CallResult {
     const response: CallResult = {
       sonucKodu: "0000",
       sonucMesaji: "Islem basari ile tamamlandi.",
@@ -111,7 +151,11 @@ export class Sandbox {
     for (const [key, value] of this.state.identifiers) {
       response[key] = value;
     }
-    // Output DVO composite: takipler for hasta-kabul (ProvizyonCevapDVO).
+    // Echo the caller's identifiers so responses are self-contained.
+    for (const key of ["takipNo", "hastaBasvuruNo", "saglikTesisKodu"]) {
+      if (key in request) response[key] = request[key];
+    }
+    // Output DVO composites, keyed by the contract's output DVO.
     const contract = method["contract"] as Record<string, unknown> | undefined;
     const outputDvo = contract?.["outputDvo"] as string | undefined;
     if (outputDvo === "ProvizyonCevapDVO") {
@@ -126,13 +170,13 @@ export class Sandbox {
         },
       ];
     }
+    if (outputDvo === "HizmetKayitCevapDVO") {
+      response["hataliKayitlar"] = [];
+    }
     return response;
   }
 
-  private replayScenario(
-    scenarioId: string,
-    state: EpisodeState,
-  ): CallResult {
+  private replayScenario(scenarioId: string, state: EpisodeState): CallResult {
     const scenario = this.bundle.scenarios.find(
       (s: Method) => s["id"] === scenarioId,
     );
@@ -140,8 +184,7 @@ export class Sandbox {
     const expected = scenario["expected"] as Record<string, unknown>;
     const result = expected["result"] as Record<string, string>;
     const stateChanges = expected["stateChanges"] as
-      | Record<string, unknown>
-      | undefined;
+      Record<string, unknown> | undefined;
     if (stateChanges && Array.isArray(stateChanges["creates"])) {
       state.applyCreates(stateChanges["creates"] as string[], []);
     }
