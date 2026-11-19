@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.1.1",
   "description": "Stateful sandbox emulating the MEDULA-compatible claim flow defined by claimbridge-medula-spec — loads the published bundle, no live SGK connection.",
   "license": "MIT",
   "engines": {
