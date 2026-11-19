@@ -11,9 +11,9 @@
  * - bad JSON / unknown method or scenario → 400 { sonucKodu: "SANDBOX_BAD_REQUEST", ... }
  */
 import { createServer, type Server } from "node:http";
-import { loadBundle } from "./loadBundle.js";
-import { EpisodeState } from "./EpisodeState.js";
-import { Sandbox } from "./Sandbox.js";
+import { loadBundle } from "./loadBundle.ts";
+import { EpisodeState } from "./EpisodeState.ts";
+import { Sandbox } from "./Sandbox.ts";
 
 export interface SandboxServerHandle {
   port: number;

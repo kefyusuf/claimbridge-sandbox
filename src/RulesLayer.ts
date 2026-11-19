@@ -4,9 +4,9 @@
  * called method id; handlers are keyed by rule id so the bundle decides
  * which rules run (registry-first — no hardcoded rule list in the sandbox).
  */
-import type { BundleCollection } from "./loadBundle.js";
-import type { EpisodeState } from "./EpisodeState.js";
-import type { CallResult } from "./Sandbox.js";
+import type { BundleCollection } from "./loadBundle.ts";
+import type { EpisodeState } from "./EpisodeState.ts";
+import type { CallResult } from "./Sandbox.ts";
 
 interface Rule {
   id: string;

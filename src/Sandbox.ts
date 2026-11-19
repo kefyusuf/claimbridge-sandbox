@@ -3,9 +3,9 @@
  * validates requests against the input DVO, applies workflow state
  * effects, and replays scenario contracts.
  */
-import { loadBundle, type Bundle } from "./loadBundle.js";
-import { EpisodeState, IDENTIFIER_NAMES } from "./EpisodeState.js";
-import { RulesLayer } from "./RulesLayer.js";
+import { loadBundle, type Bundle } from "./loadBundle.ts";
+import { EpisodeState, IDENTIFIER_NAMES } from "./EpisodeState.ts";
+import { RulesLayer } from "./RulesLayer.ts";
 
 export interface CallResult {
   sonucKodu: string;
