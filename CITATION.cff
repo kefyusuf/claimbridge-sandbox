@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: claimbridge-sandbox
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - name: KEF, Yusuf
+    email: kefyusuf@users.noreply.github.com
+repository-code: >-
+  https://github.com/kefyusuf/claimbridge-sandbox
+url: >-
+  https://github.com/kefyusuf/claimbridge-sandbox
+abstract: >-
+  Stateful sandbox emulating the MEDULA-compatible claim flow
+  defined by claimbridge-medula-spec. Loads the published spec
+  bundle, maintains episode state, validates requests against
+  DVO/rule contracts, detects duplicate invoices, and replays
+  scenario contracts. No live SGK connection and no real
+  patient data.
+keywords:
+  - medula
+  - sgk
+  - healthcare
+  - claims
+  - sandbox
+  - turkish-healthcare
+license: MIT
+version: v0.4.0
+date-released: "2026-11-19"

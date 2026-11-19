@@ -13,6 +13,11 @@ export interface CallResult {
   [key: string]: unknown;
 }
 
+export interface WorkflowStepResult {
+  stepId: string;
+  result: CallResult;
+}
+
 type Method = Record<string, unknown>;
 type DvoField = Record<string, unknown>;
 
@@ -91,6 +96,48 @@ export class Sandbox {
 
     // 6. Build the success response from the generated identifiers.
     return this.buildSuccessResponse(method, request);
+  }
+
+  /**
+   * Runs a bundle workflow end-to-end: resolves the step order from the
+   * spec, injects state identifiers into each step request (explicit
+   * request fields win), and stops the chain at the first failing step.
+   */
+  runWorkflow(
+    workflowId: string,
+    requests: Record<string, Record<string, unknown>>,
+  ): WorkflowStepResult[] {
+    const workflow = this.bundle.workflows.find(
+      (w: Method) => w["id"] === workflowId,
+    );
+    if (!workflow) throw new Error(`unknown workflow: ${workflowId}`);
+    const steps = (workflow["steps"] as Array<Method>) ?? [];
+    const results: WorkflowStepResult[] = [];
+    for (const step of steps) {
+      const stepId = step["id"] as string;
+      const unmet = ((step["requires"] as string[]) ?? []).find(
+        (name) =>
+          !this.state.entities.has(name) && !this.state.identifiers.has(name),
+      );
+      if (unmet) {
+        results.push({
+          stepId,
+          result: {
+            sonucKodu: "SANDBOX_1001",
+            sonucMesaji: `Workflow on kosulu saglanmiyor - ${unmet}`,
+          },
+        });
+        break;
+      }
+      const request: Record<string, unknown> = {
+        ...Object.fromEntries(this.state.identifiers),
+        ...(requests[stepId] ?? {}),
+      };
+      const result = this.call(step["method"] as string, request);
+      results.push({ stepId, result });
+      if (result["sonucKodu"] !== "0000") break;
+    }
+    return results;
   }
 
   private resolveMethod(methodId: string): Method | undefined {

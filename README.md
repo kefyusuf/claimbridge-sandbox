@@ -13,7 +13,11 @@ result patterns.
 
 ## Status
 
-M0 (bootstrap): bundle loader + episode state map. See the
+**v0.4.0 — M0-M4 complete.** The sandbox runs the full `core-claim-flow`
+workflow (patient admission → service registration → invoice registration)
+end-to-end via `runWorkflow`, with DVO validation, a bundle-driven rules
+layer, read preconditions, duplicate-invoice detection, and verbatim replay
+of all six scenario contracts. See the
 [sandbox PRD](https://github.com/kefyusuf/claimbridge-medula-spec/blob/main/docs/CLAIMBRIDGE_SANDBOX_PRD.md)
 for the full handoff.
 
