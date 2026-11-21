@@ -238,7 +238,61 @@ export class Sandbox {
     if (outputDvo === "HizmetKayitCevapDVO") {
       response["hataliKayitlar"] = [];
     }
+    this.composeFromOutputDvo(method, request, response);
     return response;
+  }
+
+  /**
+   * Generic composition for every group added after M4: walk the output
+   * DVO contract and fill each field from generated identifiers, the
+   * request echo, or a deterministic empty/default value. Special-cased
+   * composites above run afterwards and win.
+   */
+  private composeFromOutputDvo(
+    method: Method,
+    request: Record<string, unknown>,
+    response: CallResult,
+  ): void {
+    const contract = method["contract"] as Record<string, unknown> | undefined;
+    const outputDvoId = contract?.["outputDvo"] as string | undefined;
+    if (!outputDvoId || outputDvoId === "ProvizyonCevapDVO") return;
+    if (outputDvoId === "HizmetKayitCevapDVO") return;
+    const outputDvo = this.resolveDvo(outputDvoId);
+    if (!outputDvo) return;
+    const fields = (outputDvo["fields"] as DvoField[]) ?? [];
+    for (const f of fields) {
+      const name = f["name"] as string;
+      const type = String(f["type"] ?? "string");
+      if (name === "sonucKodu" || name === "sonucMesaji") continue;
+      if (this.state.identifiers.has(name)) {
+        response[name] = this.state.identifiers.get(name);
+        continue;
+      }
+      if (
+        name in request &&
+        request[name] !== null &&
+        request[name] !== undefined
+      ) {
+        response[name] = request[name];
+        continue;
+      }
+      if (type === "array") {
+        response[name] = [];
+        continue;
+      }
+      if (type === "object") {
+        response[name] = {};
+        continue;
+      }
+      if (f["required"] === true) {
+        if (type === "integer") response[name] = 1;
+        else if (type === "decimal") response[name] = 1;
+        else if (type === "boolean") response[name] = true;
+        else response[name] = `SYNTHETIC_${name.toUpperCase()}`;
+        continue;
+      }
+      response[name] = null;
+    }
   }
 
   private replayScenario(scenarioId: string, state: EpisodeState): CallResult {

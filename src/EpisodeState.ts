@@ -15,6 +15,10 @@ export const IDENTIFIER_NAMES: ReadonlySet<string> = new Set([
   "faturaTeslimNo",
   "faturaTutari",
   "bildirimNo",
+  "takipFormuNo",
+  "taahhutNo",
+  "formNo",
+  "raporTakipNo",
 ]);
 
 // Module-scoped monotonic counter: generated identifiers must stay
