@@ -12,7 +12,7 @@ beforeAll(() => {
 
 describe("bundle loader (sandbox M0)", () => {
   it("loads the spec bundle with all seven collections", () => {
-    expect(bundle.specVersion).toBe("0.10.0");
+    expect(bundle.specVersion).toBe("0.11.0");
     expect(bundle.services).toHaveLength(9);
     expect(bundle.methods).toHaveLength(73);
     expect(bundle.dvos).toHaveLength(212);
@@ -20,6 +20,34 @@ describe("bundle loader (sandbox M0)", () => {
     expect(bundle.rules).toHaveLength(7);
     expect(bundle.workflows).toHaveLength(4);
     expect(bundle.scenarios).toHaveLength(9);
+  });
+
+  it("carries the corrected code lists from spec v0.11.0 (G54)", () => {
+    const istisnai = bundle.enums.find(
+      (e: Record<string, unknown>) => e["id"] === "istisnai-hal",
+    );
+    const devredilen = bundle.enums.find(
+      (e: Record<string, unknown>) => e["id"] === "devredilen-kurum",
+    );
+    const codes = (e: Record<string, unknown> | undefined) =>
+      ((e?.["values"] as Array<{ code: string }>) ?? []).map((v) => v.code);
+    expect(codes(istisnai)).toEqual([
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "I",
+      "M",
+      "B",
+      "V",
+    ]);
+    expect(codes(devredilen)).toHaveLength(31);
+    expect(codes(devredilen)).not.toContain("V");
   });
 
   it("resolves the core-claim-flow workflow with three steps", () => {
