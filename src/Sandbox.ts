@@ -237,7 +237,16 @@ export class Sandbox {
     }
     if (outputDvo === "HizmetKayitCevapDVO") {
       response["hataliKayitlar"] = [];
-      response["islemBilgileri"] = this.registeredIslemler(request);
+      const rows = this.registeredIslemler(request);
+      response["islemBilgileri"] = rows;
+      // Consumers (identifier adoption) read the top-level field; keep it
+      // consistent with the composed rows when service lines exist.
+      const last = (
+        rows[rows.length - 1] as Record<string, unknown> | undefined
+      )?.["islemSiraNo"];
+      if (typeof last === "string") {
+        response["islemSiraNo"] = last;
+      }
     }
     this.composeFromOutputDvo(method, request, response);
     return response;
