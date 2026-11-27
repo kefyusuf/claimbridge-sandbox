@@ -248,6 +248,11 @@ export class Sandbox {
         response["islemSiraNo"] = last;
       }
     }
+    if (outputDvo === "TaahhutCevapDVO") {
+      // Tablo 4.7.1.b (s.322): taahhutCikti is a byte[] PDF attachment —
+      // the sandbox ships a deterministic placeholder, not an empty array.
+      response["taahhutCikti"] = ["SYNTHETIC_PDF_TAAHHUT_CIKTI"];
+    }
     this.composeFromOutputDvo(method, request, response);
     return response;
   }
@@ -312,6 +317,9 @@ export class Sandbox {
     const outputDvoId = contract?.["outputDvo"] as string | undefined;
     if (!outputDvoId || outputDvoId === "ProvizyonCevapDVO") return;
     if (outputDvoId === "HizmetKayitCevapDVO") return;
+    // TaahhutCevapDVO is fully covered by the identifier loop plus the
+    // special composite above (taahhutCikti PDF placeholder).
+    if (outputDvoId === "TaahhutCevapDVO") return;
     const outputDvo = this.resolveDvo(outputDvoId);
     if (!outputDvo) return;
     const fields = (outputDvo["fields"] as DvoField[]) ?? [];
