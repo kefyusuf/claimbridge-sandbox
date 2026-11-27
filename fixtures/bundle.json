@@ -1,6 +1,6 @@
 {
-  "specVersion": "0.10.0",
-  "generatedAt": "2026-11-27T15:44:35.672Z",
+  "specVersion": "0.11.0",
+  "generatedAt": "2026-11-27T21:40:05.896Z",
   "sources": [
     {
       "id": "medula-hastane-guide-2026-06-17",
@@ -38757,26 +38757,6 @@
           "code": "149",
           "label": "60/c2 Uluslararasi Koruma",
           "description": "Recognized international protection applicants/status holders (60/c2).."
-        },
-        {
-          "code": "I",
-          "label": "Is kazasi",
-          "description": "Occupational accident transfer.."
-        },
-        {
-          "code": "M",
-          "label": "Meslek Hastaligi",
-          "description": "Occupational disease transfer.."
-        },
-        {
-          "code": "B",
-          "label": "Madde Bagimliligi",
-          "description": "Substance dependence transfer.."
-        },
-        {
-          "code": "V",
-          "label": "Acil Hal",
-          "description": "Emergency (forensic-case) transfer.."
         }
       ],
       "sourceRefs": [
@@ -38786,7 +38766,7 @@
           "guideVersion": "3.1.1",
           "fetchedAt": "2026-11-15",
           "page": 154,
-          "section": "Tablo 4.1.1.a - ProvizyonGirisDVO (devredilenKurum, liste s.155-156 ve s.158 harf kodlariyla devam eder)",
+          "section": "Tablo 4.1.1.a - ProvizyonGirisDVO (devredilenKurum, liste s.155-156'da devam eder)",
           "confidence": "extracted"
         },
         {
@@ -38805,16 +38785,8 @@
           "fetchedAt": "2026-11-15",
           "page": 156,
           "section": "devredilenKurum kodlari (32-149)",
-          "confidence": "extracted"
-        },
-        {
-          "id": "medula-hastane-guide-3-1-1-2026-10-19",
-          "sourceType": "official-guide",
-          "guideVersion": "3.1.1",
-          "fetchedAt": "2026-11-15",
-          "page": 158,
-          "section": "devredilenKurum harf kodlari (I/M/B/V)",
-          "confidence": "extracted"
+          "confidence": "extracted",
+          "notes": "Group 54 correction: the s.158 letter rows (I/M/B/V) belong to the istisnaiHal list, not to devredilenKurum — the earlier column-flow inference had misattributed them here; they now live in the istisnai-hal enum."
         }
       ],
       "status": "reviewed"
@@ -40030,6 +40002,26 @@
           "code": "9",
           "label": "BKK na gore Borclular",
           "description": "Debtors under BKK."
+        },
+        {
+          "code": "I",
+          "label": "Is kazasi",
+          "description": "Occupational accident condition (letter code, s.158)."
+        },
+        {
+          "code": "M",
+          "label": "Meslek Hastaligi",
+          "description": "Occupational disease condition (letter code, s.158)."
+        },
+        {
+          "code": "B",
+          "label": "Madde Bagimliligi",
+          "description": "Substance dependence condition (letter code, s.158)."
+        },
+        {
+          "code": "V",
+          "label": "Acil Hal (Adli Vaka kaynakli basvurular)",
+          "description": "Emergency condition for adli-vaka sourced applications (letter code, s.158)."
         }
       ],
       "sourceRefs": [
@@ -40048,9 +40040,9 @@
           "guideVersion": "3.1.1",
           "fetchedAt": "2026-11-15",
           "page": 158,
-          "section": "ProvizyonGirisDVO istisnaiHal codes 5-9",
+          "section": "ProvizyonGirisDVO istisnaiHal codes 5-9 and letter codes I/M/B/V",
           "confidence": "extracted",
-          "notes": "Codes 5-9 continue on s.158 before the devredilenKurum letter codes (I/M/B/V). Column-flow inference noted; a visual pass of pages 157-158 would remove any residual doubt."
+          "notes": "Codes 5-9 continue on s.158 and the list closes with the four letter codes I/M/B/V. Group 54 resolved the earlier column-flow doubt by reading the s.158 rows verbatim: the letter codes belong to istisnaiHal, not to devredilenKurum (they had been misattributed there)."
         }
       ],
       "status": "reviewed"
