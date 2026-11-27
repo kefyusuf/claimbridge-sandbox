@@ -1,6 +1,6 @@
 {
-  "specVersion": "0.9.0",
-  "generatedAt": "2026-11-27T15:19:06.950Z",
+  "specVersion": "0.10.0",
+  "generatedAt": "2026-11-27T15:44:35.672Z",
   "sources": [
     {
       "id": "medula-hastane-guide-2026-06-17",
@@ -43915,6 +43915,11 @@
           "code": "0000",
           "label": "Islem Basarili",
           "description": "The operation completed successfully. Documented as a String of length 4 in every response table (Tablo 4.1.1.b, 4.1.2.b, 4.1.3.b, 4.2.1.b, 4.2.3.b, 4.3.1.b, 4.3.2.b, 4.3.3.b)."
+        },
+        {
+          "code": "9000",
+          "label": "Uyari Mesaji ile Basarili",
+          "description": "NOT an error: the operation completed successfully and sonucMesaji carries a warning that must be shown to the user (guide s.103). Documented verbatim for under-18 provision requests (s.143): the provision succeeds and takipNo is still returned; the message must be displayed as a warning and the patient directed as stated."
         }
       ],
       "sourceRefs": [
@@ -43926,7 +43931,27 @@
           "page": 165,
           "section": "Response tables across all methods",
           "confidence": "extracted",
-          "notes": "Verification correction (Group 12): the codes 33/34/35/99 added in Group 9 were EKDS verification-reason codes (ekdsYontemGerekce, s.167-168), not result codes — they moved to the ekds-yontem-gerekce enum. The guide provides no global result-code catalog; error codes surface per response in Medula and are cataloged as they are observed."
+          "notes": "Verification correction (Group 12): the codes 33/34/35/99 added in Group 9 were EKDS verification-reason codes (ekdsYontemGerekce, s.167-168), not result codes — they moved to the ekds-yontem-gerekce enum. The guide provides no global result-code catalog; error codes surface per response in Medula and are cataloged as they are observed. Group 50: the guide's own changed-sections history documents one more result code beyond 0000 — 9000 is a success-with-warning code, not an error (s.103), with the under-18 provision branch carrying the verbatim warning message (s.143)."
+        },
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 103,
+          "section": "Changed-sections history (v3.1.1 note)",
+          "confidence": "extracted",
+          "notes": "Guide verbatim: \"sonucKodu alanında eğer 9000 geliyorsa bu mesaj hata mesajı değil, HBYS sistemin üzerinden kullanıcılara gösterilmesi gereken uyarı mesajı anlamına gelmektedir. 9000 sonuç kodu geldiği durumda işleminiz başarı ile gerçekleştirilmiş demektir.\""
+        },
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 143,
+          "section": "Changed-sections history (v3.0.1 note)",
+          "confidence": "extracted",
+          "notes": "Guide verbatim (under-18 branch): \"hata kodu olarak 9000 ve uyarı mesajı olarak da 'Provizyon sorgulamasını yaptığınız çocuğun ana yada babasına ait TC kimlik numarası adı, soyadı, ve ikametgah adresi bilgileri ile GSS tescili için mahalinizdeki SGK İl/Merkez Müdürlüğüne başvurması için yönlendiriniz!' ... 9000 hata kodu hata olarak değerlendirilmemelidir.\""
         }
       ],
       "status": "reviewed"
@@ -45940,6 +45965,60 @@
           "sourceType": "sandbox-design",
           "confidence": "unknown",
           "notes": "SANDBOX_VALIDATION_ERROR is a sandbox-only code, not an official Medula error code (PRD 15.3)."
+        }
+      ],
+      "status": "draft"
+    },
+    {
+      "id": "provizyon-under18-warning",
+      "title": "An under-18 provision succeeds with a mandatory warning (9000)",
+      "method": "medula.hastane.hasta-kabul.hasta-kabul",
+      "given": {
+        "facility": "SYNTHETIC_FACILITY_001"
+      },
+      "request": {
+        "saglikTesisKodu": 1,
+        "hastaTCKimlikNo": "SYNTHETIC_TC_000000001",
+        "provizyonTipi": "N",
+        "tedaviTuru": "A",
+        "takipTipi": "N",
+        "bransKodu": 1,
+        "doktorTescilNo": "SYNTHETIC_DOCTOR_001",
+        "ktsHbysKodu": "SYNTHETIC_HBYS_001"
+      },
+      "expected": {
+        "result": {
+          "sonucKodu": "9000",
+          "sonucMesaji": "Provizyon sorgulamasını yaptığınız çocuğun ana yada babasına ait TC kimlik numarası adı, soyadı, ve ikametgah adresi bilgileri ile GSS tescili için mahalinizdeki SGK İl/Merkez Müdürlüğüne başvurması için yönlendiriniz!"
+        },
+        "stateChanges": {
+          "creates": [
+            "hastaBasvuruNo",
+            "takipNo",
+            "patientAdmission",
+            "takip"
+          ],
+          "note": "9000 is NOT an error (s.103): the provision succeeds and takipNo is still returned; sonucMesaji must be displayed as a warning and the patient directed as stated (s.143). The request models an under-18 provision — age is not representable with a synthetic TC, so the branch is exercised via scenario replay."
+        }
+      },
+      "sandbox": {
+        "deterministic": true,
+        "httpStatus": 200,
+        "latencyMs": null
+      },
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "page": 143,
+          "confidence": "extracted",
+          "notes": "The under-18 branch and its warning message are guide-verbatim (s.143); the 9000 warning semantics are documented in the changed-sections history (s.103). No error code is invented — 9000 is the guide's own code."
+        },
+        {
+          "id": "sandbox-design-v0.1",
+          "sourceType": "sandbox-design",
+          "confidence": "unknown"
         }
       ],
       "status": "draft"

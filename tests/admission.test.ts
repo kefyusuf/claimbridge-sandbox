@@ -61,6 +61,24 @@ describe("sandbox admission processor (M1)", () => {
     expect(result["sonucMesaji"]).toBeTruthy();
   });
 
+  it("replays the under-18 provision warning scenario (9000 = success-with-warning)", () => {
+    const state = new EpisodeState();
+    const s = new Sandbox(loadBundle(BUNDLE), state);
+    const result = s.call(
+      "medula.hastane.hasta-kabul.hasta-kabul",
+      {},
+      "provizyon-under18-warning",
+    );
+    // 9000 is NOT an error (guide s.103): the provision succeeds.
+    expect(result["sonucKodu"]).toBe("9000");
+    expect(String(result["sonucMesaji"])).toContain(
+      "başvurması için yönlendiriniz",
+    );
+    // takip state and identifiers are still created (guide s.143).
+    expect(state.entities.has("takip")).toBe(true);
+    expect(state.identifiers.has("takipNo")).toBe(true);
+  });
+
   it("applies workflow state effects on success", () => {
     const state = new EpisodeState();
     const s = new Sandbox(loadBundle(BUNDLE), state);
