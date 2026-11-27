@@ -129,6 +129,49 @@ describe("sandbox serves the post-v0.5 groups over http (G48)", () => {
     expect(Array.isArray(result["raporBilgileri"])).toBe(true);
   });
 
+  it("serves the taahhut annex-7 rejection over http (SANDBOX_4001)", async () => {
+    const sessionId = await createSession();
+    const result = await call(
+      sessionId,
+      "medula.hastane.taahhut.dis-taahhut-kaydet",
+      {
+        saglikTesisKodu: 1,
+        takipNo: "SYNTHETIC_TAKIPNO_000001",
+        taahhut: {
+          hastaTCKimlikNo: "10000000001",
+          adressIlPlaka: 34,
+          adressIlce: "Kadikoy",
+          adressPostaKodu: "34710",
+          adressCaddeSokak: "Bagdat Caddesi",
+          adressDisKapiNo: "12",
+          adressIcKapiNo: "3",
+          adressTelefon: "5320000000",
+          taahhutAlanAd: "Mehmet",
+          taahhutAlanSoyad: "Yilmaz",
+        },
+        taahhutDiss: [{ sutKodu: "404060", disNo: 11 }],
+      },
+    );
+    expect(result["sonucKodu"]).toBe("SANDBOX_4001");
+  });
+
+  it("serves the takip-ara window rejection over http (SANDBOX_4002)", async () => {
+    const sessionId = await createSession();
+    const result = await call(
+      sessionId,
+      "medula.hastane.yardimci-islemler.takip-ara",
+      {
+        saglikTesisKodu: 1,
+        hastaTCK: "10000000001",
+        baslangicTarihi: "01.01.2026",
+        bitisTarihi: "01.03.2026",
+        sevkDurumu: "E",
+        ktsHbysKodu: "SYNTHETIC_HBYS_001",
+      },
+    );
+    expect(result["sonucKodu"]).toBe("SANDBOX_4002");
+  });
+
   it("reads the new-group method contracts from the synced bundle", () => {
     const bundle = JSON.parse(readFileSync(BUNDLE, "utf8")) as {
       methods: Array<{ id: string }>;
