@@ -12,14 +12,14 @@ beforeAll(() => {
 
 describe("bundle loader (sandbox M0)", () => {
   it("loads the spec bundle with all seven collections", () => {
-    expect(bundle.specVersion).toBe("0.8.0");
+    expect(bundle.specVersion).toBe("0.9.0");
     expect(bundle.services).toHaveLength(9);
     expect(bundle.methods).toHaveLength(73);
     expect(bundle.dvos).toHaveLength(212);
     expect(bundle.enums).toHaveLength(81);
-    expect(bundle.rules).toHaveLength(5);
+    expect(bundle.rules).toHaveLength(7);
     expect(bundle.workflows).toHaveLength(4);
-    expect(bundle.scenarios).toHaveLength(6);
+    expect(bundle.scenarios).toHaveLength(8);
   });
 
   it("resolves the core-claim-flow workflow with three steps", () => {
@@ -36,7 +36,7 @@ describe("bundle loader (sandbox M0)", () => {
     ]);
   });
 
-  it("resolves the six scenario contracts", () => {
+  it("resolves the eight scenario contracts", () => {
     const ids = bundle.scenarios.map((s: Record<string, unknown>) => s["id"]);
     expect(ids.sort()).toEqual([
       "duplicate-invoice",
@@ -45,6 +45,8 @@ describe("bundle loader (sandbox M0)", () => {
       "invoice-without-service",
       "missing-required-field",
       "service-timeout",
+      "taahhut-dis-annex7-restriction",
+      "takip-ara-window-limit",
     ]);
   });
 });

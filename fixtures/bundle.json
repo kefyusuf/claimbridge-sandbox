@@ -1,6 +1,6 @@
 {
-  "specVersion": "0.8.0",
-  "generatedAt": "2026-11-21T06:59:42.711Z",
+  "specVersion": "0.9.0",
+  "generatedAt": "2026-11-27T15:19:06.950Z",
   "sources": [
     {
       "id": "medula-hastane-guide-2026-06-17",
@@ -45476,6 +45476,98 @@
           "status": "draft"
         }
       ]
+    },
+    {
+      "rules": [
+        {
+          "id": "taahhut-dis-annex7-restriction",
+          "type": "taahhut-rule",
+          "appliesTo": {
+            "service": "medula.hastane.taahhut",
+            "method": "medula.hastane.taahhut.dis-taahhut-kaydet",
+            "dvo": "TaahhutDisDVO",
+            "field": "sutKodu"
+          },
+          "condition": "any taahhutDiss entry carries a SUT code outside the annex-7 prosthesis list",
+          "assertion": "a dental commitment may only be registered for the annex-7 prosthesis codes (404010, 404020, 404030, 404040, 404050, 404170, 404180, 404181, 404190, 404200, 404201, 404210, 404220, 404230, 404360, 404370, 404380, 404390, 404400, 404410, 404420); a commit carrying any other code must return a non-success result and create no taahhut state (s.326).",
+          "severity": "error",
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 326,
+              "confidence": "extracted",
+              "notes": "Guide verbatim: \"Diş taahhütü sadece ağız protez işlemleri için gönderilebilecektir. SUT ek 7 listesinden protez kodları; ... bu kodlar dışında taahhüt girişi yapılamaz.\""
+            },
+            {
+              "id": "sandbox-design-v0.1",
+              "sourceType": "sandbox-design",
+              "confidence": "unknown",
+              "notes": "SANDBOX_4001 is a sandbox-only code chosen for the annex-7 rejection; the guide states the restriction but not the error code."
+            }
+          ],
+          "status": "draft"
+        },
+        {
+          "id": "taahhut-ilce-province-mismatch",
+          "type": "taahhut-rule",
+          "appliesTo": {
+            "service": "medula.hastane.taahhut",
+            "method": "medula.hastane.taahhut.dis-taahhut-kaydet",
+            "dvo": "TaahhutDVO",
+            "field": "adressIlce"
+          },
+          "condition": "the district name does not match any district of the plate-coded province",
+          "assertion": "the commitment must not be registered when adressIlce does not belong to the province given by adressIlPlaka (s.323).",
+          "severity": "error",
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 323,
+              "confidence": "extracted",
+              "notes": "Guide verbatim: \"İlçe adının doğru yazılması önemlidir. İlçe adı plaka kodu verilen ilin herhangibir ilçesi ile eşleşmez ise kayıt yapılamaz.\" The sandbox cannot verify real district data; consumers apply the check against their own district table."
+            }
+          ],
+          "status": "draft"
+        }
+      ]
+    },
+    {
+      "rules": [
+        {
+          "id": "takip-ara-window-limit",
+          "type": "yardimci-rule",
+          "appliesTo": {
+            "service": "medula.hastane.yardimci-islemler",
+            "method": "medula.hastane.yardimci-islemler.takip-ara",
+            "dvo": "TakipAraGirisDVO",
+            "field": "bitisTarihi"
+          },
+          "condition": "the search window between baslangicTarihi and bitisTarihi exceeds one month",
+          "assertion": "takip-ara must return a non-success result when the date window spans more than one month (s.286).",
+          "severity": "error",
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 286,
+              "confidence": "extracted",
+              "notes": "Guide verbatim: \"başlangış ve bitiş tarih aralığı 1 ay dan fazla olamaz.\""
+            },
+            {
+              "id": "sandbox-design-v0.1",
+              "sourceType": "sandbox-design",
+              "confidence": "unknown",
+              "notes": "SANDBOX_4002 is a sandbox-only code for the window rejection; the guide states the limit but not the error code."
+            }
+          ],
+          "status": "draft"
+        }
+      ]
     }
   ],
   "workflows": [
@@ -45889,6 +45981,113 @@
           "sourceType": "sandbox-design",
           "confidence": "unknown",
           "notes": "SANDBOX_TIMEOUT is a sandbox-only code, not an official Medula error code (PRD 15.6)."
+        }
+      ],
+      "status": "draft"
+    },
+    {
+      "id": "taahhut-dis-annex7-restriction",
+      "title": "A dental commitment with a SUT code outside annex 7 is rejected",
+      "method": "medula.hastane.taahhut.dis-taahhut-kaydet",
+      "given": {
+        "facility": "SYNTHETIC_FACILITY_001",
+        "takipNo": "SYNTHETIC_TAKIPNO_000001"
+      },
+      "request": {
+        "saglikTesisKodu": 1,
+        "takipNo": "SYNTHETIC_TAKIPNO_000001",
+        "taahhut": {
+          "hastaTCKimlikNo": "10000000001",
+          "adressIlPlaka": 34,
+          "adressIlce": "Kadikoy",
+          "adressPostaKodu": "34710",
+          "adressCaddeSokak": "Bagdat Caddesi",
+          "adressDisKapiNo": "12",
+          "adressIcKapiNo": "3",
+          "adressTelefon": "5320000000",
+          "taahhutAlanAd": "Mehmet",
+          "taahhutAlanSoyad": "Yilmaz"
+        },
+        "taahhutDiss": [
+          {
+            "sutKodu": "404060",
+            "disNo": 11
+          }
+        ]
+      },
+      "expected": {
+        "result": {
+          "sonucKodu": "SANDBOX_4001",
+          "sonucMesaji": "Taahhut girişi yalnızca SUT ek-7 protez kodları ile yapılabilir."
+        },
+        "stateChanges": {
+          "note": "The annex-7 restriction (s.326) rejects the commit; no taahhut state is created."
+        }
+      },
+      "sandbox": {
+        "deterministic": true,
+        "httpStatus": 200,
+        "latencyMs": null
+      },
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "page": 326,
+          "confidence": "extracted",
+          "notes": "The restriction is guide-verbatim; SANDBOX_4001 is a sandbox-only code (the guide states the restriction without an error code)."
+        },
+        {
+          "id": "sandbox-design-v0.1",
+          "sourceType": "sandbox-design",
+          "confidence": "unknown"
+        }
+      ],
+      "status": "draft"
+    },
+    {
+      "id": "takip-ara-window-limit",
+      "title": "A tracking search window longer than one month is rejected",
+      "method": "medula.hastane.yardimci-islemler.takip-ara",
+      "given": {
+        "facility": "SYNTHETIC_FACILITY_001"
+      },
+      "request": {
+        "saglikTesisKodu": 1,
+        "hastaTCK": "10000000001",
+        "baslangicTarihi": "01.01.2026",
+        "bitisTarihi": "01.03.2026",
+        "sevkDurumu": "E",
+        "ktsHbysKodu": "SYNTHETIC_HBYS_001"
+      },
+      "expected": {
+        "result": {
+          "sonucKodu": "SANDBOX_4002",
+          "sonucMesaji": "Arama araligi bir aydan fazla olamaz."
+        },
+        "stateChanges": {
+          "note": "The one-month window limit (s.286) rejects the search; no state changes."
+        }
+      },
+      "sandbox": {
+        "deterministic": true,
+        "httpStatus": 200,
+        "latencyMs": null
+      },
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "page": 286,
+          "confidence": "extracted",
+          "notes": "The window limit is guide-verbatim (\"başlangış ve bitiş tarih aralığı 1 ay dan fazla olamaz\"); SANDBOX_4002 is a sandbox-only code."
+        },
+        {
+          "id": "sandbox-design-v0.1",
+          "sourceType": "sandbox-design",
+          "confidence": "unknown"
         }
       ],
       "status": "draft"

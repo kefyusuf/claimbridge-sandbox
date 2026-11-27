@@ -18,6 +18,43 @@ interface Rule {
   };
 }
 
+/**
+ * SUT annex-7 prosthesis codes (guide s.326): a dental commitment may
+ * only carry these codes; anything else is rejected by the
+ * taahhut-dis-annex7-restriction rule.
+ */
+const ANNEX7_PROSTHESIS_CODES = new Set([
+  "404010",
+  "404020",
+  "404030",
+  "404040",
+  "404050",
+  "404170",
+  "404180",
+  "404181",
+  "404190",
+  "404200",
+  "404201",
+  "404210",
+  "404220",
+  "404230",
+  "404360",
+  "404370",
+  "404380",
+  "404390",
+  "404400",
+  "404410",
+  "404420",
+]);
+
+/** Parses dd.mm.yyyy guide dates; returns null for anything else. */
+function parseTrDate(value: unknown): { y: number; m: number } | null {
+  if (typeof value !== "string") return null;
+  const m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(value);
+  if (!m) return null;
+  return { y: Number(m[3]), m: Number(m[2]) };
+}
+
 export class RulesLayer {
   private rules: Rule[];
 
@@ -93,6 +130,42 @@ export class RulesLayer {
           };
         }
         return null;
+      // taahhut-rule (guide s.326): a dental commitment may only be
+      // registered for the SUT annex-7 prosthesis codes; any other code
+      // is rejected and creates no taahhut state.
+      case "taahhut-dis-annex7-restriction": {
+        const entries = Array.isArray(request["taahhutDiss"])
+          ? (request["taahhutDiss"] as Array<Record<string, unknown>>)
+          : [];
+        const ok = entries.every(
+          (e) =>
+            typeof e["sutKodu"] === "string" &&
+            ANNEX7_PROSTHESIS_CODES.has(e["sutKodu"] as string),
+        );
+        if (!ok) {
+          return {
+            sonucKodu: "SANDBOX_4001",
+            sonucMesaji:
+              "Taahhut girişi yalnızca SUT ek-7 protez kodları ile yapılabilir.",
+          };
+        }
+        return null;
+      }
+      // yardimci-rule (guide s.286): the takip-ara start/end window may
+      // not exceed one month. The guide states the limit without defining
+      // "one month"; the sandbox treats it as a calendar-month span of at
+      // most one (01.01→01.02 passes, 01.01→01.03 fails).
+      case "takip-ara-window-limit": {
+        const start = parseTrDate(request["baslangicTarihi"]);
+        const end = parseTrDate(request["bitisTarihi"]);
+        if (start && end && end.y * 12 + end.m - (start.y * 12 + start.m) > 1) {
+          return {
+            sonucKodu: "SANDBOX_4002",
+            sonucMesaji: "Arama araligi bir aydan fazla olamaz.",
+          };
+        }
+        return null;
+      }
       // No sandbox handler for this rule id yet.
       default:
         return null;
