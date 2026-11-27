@@ -304,8 +304,21 @@ export class Sandbox {
     const result = expected["result"] as Record<string, string>;
     const stateChanges = expected["stateChanges"] as
       Record<string, unknown> | undefined;
+    // The replayed scenario's own method decides which identifiers the
+    // step generates — a 9000-warning replay still produces takipNo, so
+    // the episode can continue with the created takip state.
+    const method = this.bundle.methods.find(
+      (m: Method) => m["id"] === scenario["method"],
+    );
+    const generates =
+      ((method?.["stateEffects"] as Record<string, unknown> | undefined)?.[
+        "generates"
+      ] as string[] | undefined) ?? [];
     if (stateChanges && Array.isArray(stateChanges["creates"])) {
-      state.applyCreates(stateChanges["creates"] as string[], []);
+      state.applyCreates(
+        stateChanges["creates"] as string[],
+        Array.isArray(generates) ? generates : [],
+      );
     }
     return {
       sonucKodu: result["sonucKodu"],
