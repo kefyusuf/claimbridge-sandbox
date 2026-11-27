@@ -237,9 +237,55 @@ export class Sandbox {
     }
     if (outputDvo === "HizmetKayitCevapDVO") {
       response["hataliKayitlar"] = [];
+      response["islemBilgileri"] = this.registeredIslemler(request);
     }
     this.composeFromOutputDvo(method, request, response);
     return response;
+  }
+
+  /** HizmetKayitGirisDVO's service-line arrays (guide §4.1.2.a). */
+  private static readonly SERVICE_LINE_FIELDS = [
+    "ameliyatveGirisimBilgileri",
+    "digerIslemBilgileri",
+    "disBilgileri",
+    "ilacBilgileri",
+    "konsultasyonBilgileri",
+    "malzemeBilgileri",
+    "tahlilBilgileri",
+    "tetkikveRadyolojiBilgileri",
+    "hastaYatisBilgileri",
+    "kanBilgileri",
+  ];
+
+  /**
+   * Guide s.235 (Tablo 4.2.1.m): one KayitliIslemBilgisiDVO row per
+   * submitted service line — hizmetSunucuRefNo echoes the caller's
+   * reference, islemSiraNo is freshly generated per row and the last
+   * value stays on the session state.
+   */
+  private registeredIslemler(
+    request: Record<string, unknown>,
+  ): Array<Record<string, unknown>> {
+    const rows: Array<Record<string, unknown>> = [];
+    for (const field of Sandbox.SERVICE_LINE_FIELDS) {
+      const entries = request[field];
+      if (!Array.isArray(entries)) continue;
+      for (const entry of entries) {
+        if (
+          entry === null ||
+          typeof entry !== "object" ||
+          Array.isArray(entry)
+        ) {
+          continue;
+        }
+        const refNo = (entry as Record<string, unknown>)["hizmetSunucuRefNo"];
+        rows.push({
+          hizmetSunucuRefNo: typeof refNo === "string" ? refNo : null,
+          islemSiraNo: this.state.generate("islemSiraNo"),
+        });
+      }
+    }
+    return rows;
   }
 
   /**
