@@ -90,9 +90,7 @@ describe("sandbox rules layer (G49-b)", () => {
       takipAraRequest("01.01.2026", "01.03.2026"),
     );
     expect(result["sonucKodu"]).toBe("SANDBOX_4002");
-    expect(result["sonucMesaji"]).toBe(
-      "Arama araligi bir aydan fazla olamaz.",
-    );
+    expect(result["sonucMesaji"]).toBe("Arama araligi bir aydan fazla olamaz.");
   });
 
   it("accepts a window within one month", () => {
@@ -106,7 +104,11 @@ describe("sandbox rules layer (G49-b)", () => {
 
   it("replays both new-group scenarios verbatim", () => {
     const sandbox = new Sandbox(loadBundle(BUNDLE), new EpisodeState());
-    const annex = sandbox.call(DIS_TAAHHUT_KAYDET, {}, "taahhut-dis-annex7-restriction");
+    const annex = sandbox.call(
+      DIS_TAAHHUT_KAYDET,
+      {},
+      "taahhut-dis-annex7-restriction",
+    );
     expect(annex["sonucKodu"]).toBe("SANDBOX_4001");
     const window = sandbox.call(TAKIP_ARA, {}, "takip-ara-window-limit");
     expect(window["sonucKodu"]).toBe("SANDBOX_4002");
