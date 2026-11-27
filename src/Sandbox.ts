@@ -271,7 +271,11 @@ export class Sandbox {
       const entries = request[field];
       if (!Array.isArray(entries)) continue;
       for (const entry of entries) {
-        if (entry === null || typeof entry !== "object" || Array.isArray(entry)) {
+        if (
+          entry === null ||
+          typeof entry !== "object" ||
+          Array.isArray(entry)
+        ) {
           continue;
         }
         const refNo = (entry as Record<string, unknown>)["hizmetSunucuRefNo"];

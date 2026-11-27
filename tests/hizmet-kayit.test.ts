@@ -203,9 +203,7 @@ describe("sandbox service registration (M2)", () => {
     const result = env.sandbox.call(HIZMET_KAYIT, request);
     const rows = result["islemBilgileri"] as Array<{ islemSiraNo: string }>;
     expect(rows).toHaveLength(2);
-    expect(env.state.identifiers.get("islemSiraNo")).toBe(
-      rows[1]?.islemSiraNo,
-    );
+    expect(env.state.identifiers.get("islemSiraNo")).toBe(rows[1]?.islemSiraNo);
   });
 
   it("keeps islemBilgileri empty when no service lines are submitted", () => {
