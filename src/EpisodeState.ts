@@ -44,6 +44,19 @@ export class EpisodeState {
     }
   }
 
+  /**
+   * Generates one fresh value for a known identifier name and tracks it
+   * on the state — used when a single call produces several identifier
+   * values (one islemSiraNo per registered service line, guide s.235).
+   */
+  generate(name: string): string | null {
+    if (!IDENTIFIER_NAMES.has(name)) return null;
+    globalIdentifierCounter += 1;
+    const value = `SYNTHETIC_${name.toUpperCase()}_${String(globalIdentifierCounter).padStart(6, "0")}`;
+    this.identifiers.set(name, value);
+    return value;
+  }
+
   applyDeletes(deletes: string[]): void {
     for (const name of deletes) {
       this.entities.delete(name);

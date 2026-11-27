@@ -170,4 +170,46 @@ describe("sandbox service registration (M2)", () => {
     const r2 = env.sandbox.call(HIZMET_KAYIT, hizmetRequest(admission));
     expect(r1["islemSiraNo"]).not.toBe(r2["islemSiraNo"]);
   });
+
+  it("composes one KayitliIslemBilgisi row per submitted service line (s.235)", () => {
+    const request = hizmetRequest(admission, {
+      ilacBilgileri: [
+        { hizmetSunucuRefNo: "SYNTHETIC_REF_001", barkod: "8699546010016" },
+        { hizmetSunucuRefNo: "SYNTHETIC_REF_002", barkod: "8699546020013" },
+      ],
+      tahlilBilgileri: [{ hizmetSunucuRefNo: "SYNTHETIC_REF_003" }],
+    });
+    const result = env.sandbox.call(HIZMET_KAYIT, request);
+    expect(result["sonucKodu"]).toBe("0000");
+    const rows = result["islemBilgileri"] as Array<{
+      hizmetSunucuRefNo: string | null;
+      islemSiraNo: string;
+    }>;
+    expect(rows).toHaveLength(3);
+    expect(rows[0]?.hizmetSunucuRefNo).toBe("SYNTHETIC_REF_001");
+    expect(rows[1]?.hizmetSunucuRefNo).toBe("SYNTHETIC_REF_002");
+    expect(rows[2]?.hizmetSunucuRefNo).toBe("SYNTHETIC_REF_003");
+    for (const row of rows) {
+      expect(row.islemSiraNo).toMatch(/^SYNTHETIC_ISLEMSIRANO_\d{6}$/);
+    }
+    expect(new Set(rows.map((r) => r.islemSiraNo)).size).toBe(3);
+  });
+
+  it("tracks the last generated islemSiraNo as the session identifier", () => {
+    const request = hizmetRequest(admission, {
+      ilacBilgileri: [{ hizmetSunucuRefNo: "SYNTHETIC_REF_001" }],
+      tahlilBilgileri: [{ hizmetSunucuRefNo: "SYNTHETIC_REF_002" }],
+    });
+    const result = env.sandbox.call(HIZMET_KAYIT, request);
+    const rows = result["islemBilgileri"] as Array<{ islemSiraNo: string }>;
+    expect(rows).toHaveLength(2);
+    expect(env.state.identifiers.get("islemSiraNo")).toBe(
+      rows[1]?.islemSiraNo,
+    );
+  });
+
+  it("keeps islemBilgileri empty when no service lines are submitted", () => {
+    const result = env.sandbox.call(HIZMET_KAYIT, hizmetRequest(admission));
+    expect(result["islemBilgileri"]).toEqual([]);
+  });
 });
