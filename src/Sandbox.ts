@@ -253,6 +253,64 @@ export class Sandbox {
       // the sandbox ships a deterministic placeholder, not an empty array.
       response["taahhutCikti"] = ["SYNTHETIC_PDF_TAAHHUT_CIKTI"];
     }
+    if (outputDvo === "IlacAraCevapDVO") {
+      // Tablo 4.5.4.c (s.287): one sample drug row echoing the barkod.
+      response["ilaclar"] = [
+        {
+          barkod:
+            typeof request["barkod"] === "string" ? request["barkod"] : null,
+          ilacAdi: "SYNTHETIC_ILAC_ADI",
+        },
+      ];
+    }
+    if (outputDvo === "DoktorAraCevapDVO") {
+      // Tablo 4.5.2.c (s.285): one sample physician row echoing the tescilNo.
+      response["doktorlar"] = [
+        {
+          drAdi: "SYNTHETIC_DR_ADI",
+          drSoyadi: "SYNTHETIC_DR_SOYADI",
+          drDiplomaNo: "SYNTHETIC_DR_DIPLOMA_NO",
+          drTescilNo:
+            typeof request["drTescilNo"] === "string"
+              ? request["drTescilNo"]
+              : null,
+        },
+      ];
+    }
+    if (outputDvo === "SaglikTesisiAraCevapDVO") {
+      // Tablo 4.5.1.c (s.284): one sample facility row echoing the code.
+      response["tesisler"] = [
+        {
+          tesisKodu:
+            typeof request["tesisKodu"] === "number"
+              ? request["tesisKodu"]
+              : request["saglikTesisKodu"],
+          tesisAdi:
+            typeof request["saglikTesisAdi"] === "string"
+              ? request["saglikTesisAdi"]
+              : "SYNTHETIC_TESIS_ADI",
+          tesisIlAdi: "SYNTHETIC_TESIS_IL",
+          tesisIlceAdi: "SYNTHETIC_TESIS_ILCE",
+        },
+      ];
+    }
+    if (outputDvo === "TakipAraCevapDVO") {
+      // Tablo 4.1.2.b (s.286): one sample tracking row — the episode's
+      // takip snapshot when one exists, deterministic placeholders otherwise.
+      const takipNo =
+        this.state.identifiers.get("takipNo") ?? "SYNTHETIC_TAKIPNO_000001";
+      const basvuruNo =
+        this.state.identifiers.get("hastaBasvuruNo") ??
+        "SYNTHETIC_HASTABASVURUNO_000001";
+      response["takipler"] = [
+        {
+          takipNo,
+          takipTipi: "N",
+          takipDurumu: "0",
+          hastaBasvuruNo: basvuruNo,
+        },
+      ];
+    }
     this.composeFromOutputDvo(method, request, response);
     return response;
   }
@@ -327,6 +385,9 @@ export class Sandbox {
       const name = f["name"] as string;
       const type = String(f["type"] ?? "string");
       if (name === "sonucKodu" || name === "sonucMesaji") continue;
+      // Fields already composed (identifier loop, echo, special composites)
+      // win — the generic defaults only fill what is still missing.
+      if (name in response) continue;
       if (this.state.identifiers.has(name)) {
         response[name] = this.state.identifiers.get(name);
         continue;
