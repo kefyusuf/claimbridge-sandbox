@@ -1,6 +1,6 @@
 {
-  "specVersion": "0.11.0",
-  "generatedAt": "2026-11-27T21:40:05.896Z",
+  "specVersion": "0.12.0",
+  "generatedAt": "2026-11-28T04:32:26.105Z",
   "sources": [
     {
       "id": "medula-hastane-guide-2026-06-17",
@@ -103,7 +103,11 @@
         "medula.hastane.hasta-kabul.kemik-iligi-islem-duzeltme",
         "medula.hastane.hasta-kabul.kemik-iligi-tc-ile-sorgu",
         "medula.hastane.hasta-kabul.ekds-kisi-dogrulama-sorgu",
-        "medula.hastane.hasta-kabul.ekds-belge-gereken-takip-sorgu"
+        "medula.hastane.hasta-kabul.ekds-belge-gereken-takip-sorgu",
+        "medula.hastane.hasta-kabul.get-yesil-kartli-sevkli-hasta",
+        "medula.hastane.hasta-kabul.update-tedavi-turu",
+        "medula.hastane.hasta-kabul.update-takip-tipi",
+        "medula.hastane.hasta-kabul.get-mustehaklik-kapsam-kodu"
       ],
       "status": "draft"
     },
@@ -675,6 +679,92 @@
           "fetchedAt": "2026-11-16",
           "page": 185,
           "section": "4.1.21 EKDS Kisi Dogrulama Sorgu Metodu",
+          "confidence": "extracted"
+        }
+      ],
+      "stateEffects": {
+        "creates": [],
+        "reads": [],
+        "updates": [],
+        "deletes": [],
+        "generates": []
+      },
+      "success": {
+        "resultCodeField": "sonucKodu",
+        "successCode": "0000",
+        "messageField": "sonucMesaji"
+      },
+      "sandbox": {
+        "supported": true,
+        "defaultScenario": null
+      },
+      "status": "reviewed"
+    },
+    {
+      "id": "medula.hastane.hasta-kabul.get-mustehaklik-kapsam-kodu",
+      "service": "medula.hastane.hasta-kabul",
+      "names": {
+        "documentationHeading": "GetMustehaklikKapsamKodu",
+        "operationName": "GetMustehaklikKapsamKodu",
+        "aliases": [
+          "getMustehaklikKapsamKodu"
+        ]
+      },
+      "contract": {
+        "inputDvo": "MustehaklikGirisDVO",
+        "outputDvo": "MustehaklikCevapDVO"
+      },
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 179,
+          "section": "4.1.15 getMustehaklikKapsamKodu Metodu",
+          "confidence": "extracted"
+        }
+      ],
+      "stateEffects": {
+        "creates": [],
+        "reads": [],
+        "updates": [],
+        "deletes": [],
+        "generates": []
+      },
+      "success": {
+        "resultCodeField": "sonucKodu",
+        "successCode": "0000",
+        "messageField": "sonucMesaji"
+      },
+      "sandbox": {
+        "supported": true,
+        "defaultScenario": null
+      },
+      "status": "reviewed"
+    },
+    {
+      "id": "medula.hastane.hasta-kabul.get-yesil-kartli-sevkli-hasta",
+      "service": "medula.hastane.hasta-kabul",
+      "names": {
+        "documentationHeading": "GetYesilKartliSevkliHasta",
+        "operationName": "GetYesilKartliSevkliHasta",
+        "aliases": [
+          "getYesilKartliSevkliHasta"
+        ]
+      },
+      "contract": {
+        "inputDvo": "YesilKartliSevkliHastaGirisDVO",
+        "outputDvo": "YesilKartliSevkliHastaCevapDVO"
+      },
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 176,
+          "section": "4.1.12 getYesilKartliSevkliHasta Metodu",
           "confidence": "extracted"
         }
       ],
@@ -1403,6 +1493,49 @@
       "status": "reviewed"
     },
     {
+      "id": "medula.hastane.hasta-kabul.update-takip-tipi",
+      "service": "medula.hastane.hasta-kabul",
+      "names": {
+        "documentationHeading": "UpdateTakipTipi",
+        "operationName": "UpdateTakipTipi",
+        "aliases": [
+          "updateTakipTipi"
+        ]
+      },
+      "contract": {
+        "inputDvo": "TakipTipiDegistirGirisDVO",
+        "outputDvo": "TakipTipiDegistirCevapDVO"
+      },
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 178,
+          "section": "4.1.14 UpdateTakipTipi Metodu",
+          "confidence": "extracted"
+        }
+      ],
+      "stateEffects": {
+        "creates": [],
+        "reads": [],
+        "updates": [],
+        "deletes": [],
+        "generates": []
+      },
+      "success": {
+        "resultCodeField": "sonucKodu",
+        "successCode": "0000",
+        "messageField": "sonucMesaji"
+      },
+      "sandbox": {
+        "supported": true,
+        "defaultScenario": null
+      },
+      "status": "reviewed"
+    },
+    {
       "id": "medula.hastane.hasta-kabul.update-tedavi-tipi",
       "service": "medula.hastane.hasta-kabul",
       "names": {
@@ -1431,6 +1564,49 @@
           "fetchedAt": "2026-11-15",
           "page": 174,
           "section": "4.1.9 UpdateTedaviTipi Metodu (TakipOkuGirisDVO/TakipDVO yeniden kullanim)",
+          "confidence": "extracted"
+        }
+      ],
+      "stateEffects": {
+        "creates": [],
+        "reads": [],
+        "updates": [],
+        "deletes": [],
+        "generates": []
+      },
+      "success": {
+        "resultCodeField": "sonucKodu",
+        "successCode": "0000",
+        "messageField": "sonucMesaji"
+      },
+      "sandbox": {
+        "supported": true,
+        "defaultScenario": null
+      },
+      "status": "reviewed"
+    },
+    {
+      "id": "medula.hastane.hasta-kabul.update-tedavi-turu",
+      "service": "medula.hastane.hasta-kabul",
+      "names": {
+        "documentationHeading": "UpdateTedaviTuru",
+        "operationName": "UpdateTedaviTuru",
+        "aliases": [
+          "updateTedaviTuru"
+        ]
+      },
+      "contract": {
+        "inputDvo": "TedaviTuruDegistirGirisDVO",
+        "outputDvo": "TedaviTuruDegistirCevapDVO"
+      },
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 177,
+          "section": "4.1.13 UpdateTedaviTuru Metodu",
           "confidence": "extracted"
         }
       ],
@@ -27132,6 +27308,182 @@
       "status": "reviewed"
     },
     {
+      "id": "MustehaklikCevapDVO",
+      "domain": "hasta-kabul",
+      "direction": "output",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 179,
+          "section": "Tablo 4.1.15.b - MustehaklikCevapDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "kapsamTuru",
+          "displayName": "Kapsam Turu",
+          "type": "integer",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Entitlement coverage type. The guide documents no code list for this Integer (s.179); the sandbox echoes 1 and consumers treat the value opaquely until a list is published.",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sonucKodu",
+          "displayName": "Sonuc Kodu",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Result code; 0000 means success, any other value is an error (s.179)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sonucMesaji",
+          "displayName": "Sonuc Mesaji",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Human-readable result message accompanying the result code (s.180)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 180,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "MustehaklikGirisDVO",
+      "domain": "hasta-kabul",
+      "direction": "input",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 179,
+          "section": "Tablo 4.1.15.a - MustehaklikGirisDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "tcKimlikNo",
+          "displayName": "TcKimlikNo",
+          "type": "string",
+          "enumRef": null,
+          "required": true,
+          "length": 11,
+          "description": "Patient TCK number (s.179)",
+          "sensitive": true,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "tarih",
+          "displayName": "Tarih",
+          "type": "string",
+          "enumRef": null,
+          "required": true,
+          "length": 10,
+          "description": "Entitlement query date (s.179)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "saglikTesisKodu",
+          "displayName": "Saglik Tesis Kodu",
+          "type": "integer",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "GSS-assigned institution code (s.179)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
       "id": "OnayBekleyenCevapDVO",
       "domain": "imzali-rapor",
       "direction": "output",
@@ -35982,6 +36334,229 @@
       "status": "reviewed"
     },
     {
+      "id": "TakipTipiDegistirCevapDVO",
+      "domain": "hasta-kabul",
+      "direction": "output",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 178,
+          "section": "Tablo 4.1.14.b - TakipTipiDegistirCevapDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "takipNo",
+          "displayName": "Takip Numarasi",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Tracking number (s.179)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "yeniTakipTipi",
+          "displayName": "Yeni Takip Tipi",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "New takip tipi (s.179)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "hastaBasvuruNo",
+          "displayName": "Hasta Basvuru No",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": 4,
+          "description": "Patient application number. Guide prints the length as String 4 (s.179) — a guide anomaly: hastaBasvuruNo is not bounded to 4 characters anywhere else in the guide; treated as unbounded here pending a guide-side correction.",
+          "sensitive": false,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted",
+              "notes": "Guide anomaly — String 4 length contradicts every other hastaBasvuruNo row; the guide-side value is preserved but annotated rather than trusted for validation."
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sonucKodu",
+          "displayName": "Sonuc Kodu",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Result code; 0000 means success, any other value is an error (s.179)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sonucMesaji",
+          "displayName": "Sonuc Mesaji",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Human-readable result message accompanying the result code (s.179)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 179,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "TakipTipiDegistirGirisDVO",
+      "domain": "hasta-kabul",
+      "direction": "input",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 178,
+          "section": "Tablo 4.1.14.a - TakipTipiDegistirGirisDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "takipNo",
+          "displayName": "Takip Numarasi",
+          "type": "string",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "Tracking number whose takip tipi changes (s.178)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 178,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "tesisKodu",
+          "displayName": "Tesis Kodu",
+          "type": "integer",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "GSS-assigned institution code (s.178)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 178,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "yeniTakipTipi",
+          "displayName": "Yeni Takip Tipi",
+          "type": "string",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "New takip tipi (takip-tipi codes N/E/U/K/T/Y/P/S/C/F/B) (s.178)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 178,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
       "id": "TaniAraCevapDVO",
       "domain": "yardimci-islemler",
       "direction": "output",
@@ -36681,6 +37256,252 @@
           "page": 261,
           "confidence": "extracted",
           "section": "4.4 Rapor Bilgisi Kayit Metotlari"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "TedaviTuruDegistirCevapDVO",
+      "domain": "hasta-kabul",
+      "direction": "output",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 177,
+          "section": "Tablo 4.1.13.b - TedaviTuruDegistirCevapDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "takipNo",
+          "displayName": "Takip Numarasi",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Tracking number (s.178)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 178,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "yeniTedaviTuru",
+          "displayName": "Yeni Tedavi Turu",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "New tedavi turu (s.178)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 178,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "hastaBasvuruNo",
+          "displayName": "Hasta Basvuru No",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": 4,
+          "description": "Patient application number. Guide prints the length as String 4 (s.178) — a guide anomaly: hastaBasvuruNo is not bounded to 4 characters anywhere else in the guide; treated as unbounded here pending a guide-side correction.",
+          "sensitive": false,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 178,
+              "confidence": "extracted",
+              "notes": "Guide anomaly — String 4 length contradicts every other hastaBasvuruNo row; the guide-side value is preserved but annotated rather than trusted for validation."
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sonucKodu",
+          "displayName": "Sonuc Kodu",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Result code; 0000 means success, any other value is an error (s.178)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 178,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sonucMesaji",
+          "displayName": "Sonuc Mesaji",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Human-readable result message accompanying the result code (s.178)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 178,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "TedaviTuruDegistirGirisDVO",
+      "domain": "hasta-kabul",
+      "direction": "input",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 177,
+          "section": "Tablo 4.1.13.a - TedaviTuruDegistirGirisDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "takipNo",
+          "displayName": "Takip Numarasi",
+          "type": "string",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "Tracking number whose tedavi turu changes (s.177)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 177,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "tesisKodu",
+          "displayName": "Tesis Kodu",
+          "type": "integer",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "GSS-assigned institution code (s.177)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 177,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "yeniTedaviTuru",
+          "displayName": "Yeni Tedavi Turu",
+          "type": "string",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "New tedavi turu (tedavi-turu codes A/Y/G) (s.177)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 177,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "yatisBitisTarihi",
+          "displayName": "Yatis Bitis Tarihi",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Inpatient discharge date for a closed yatis (s.177)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 177,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
         }
       ],
       "status": "reviewed"
@@ -37471,6 +38292,293 @@
           "page": 276,
           "confidence": "extracted",
           "section": "4.4 Rapor Bilgisi Kayit Metotlari"
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "YesilKartliHastaSevkBilgileriDVO",
+      "domain": "hasta-kabul",
+      "direction": "output",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 176,
+          "section": "Tablo 4.1.12.c - YesilKartliHastaSevkBilgileriDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "sevkEdilenBransKodu",
+          "displayName": "Sevk Edilen Brans Kodu",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Referred branch code (s.176)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 176,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sevkEdenTesisKodu",
+          "displayName": "Sevk Eden Tesis Kodu",
+          "type": "integer",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Referring facility code (s.177)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 177,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sevkEdilmeTarihi",
+          "displayName": "Sevk Edilme Tarihi",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": 10,
+          "description": "Referral date (s.177)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 177,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "takipNo",
+          "displayName": "Takip Numarasi",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Tracking number (s.177)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 177,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "YesilKartliSevkliHastaCevapDVO",
+      "domain": "hasta-kabul",
+      "direction": "output",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 176,
+          "section": "Tablo 4.1.12.b - YesilKartliSevkliHastaCevapDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "yesilKartliHastaSevkBilgileriDVO",
+          "displayName": "Yesil Kartli Hasta Sevk Bilgileri",
+          "type": "array",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Green-card patient referral rows as YesilKartliHastaSevkBilgileriDVO (Tablo 4.1.12.c, s.176)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 176,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "hastaBilgileriDVO",
+          "displayName": "Hasta Bilgileri",
+          "type": "object",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Patient information (HastaBilgileriDVO, Tablo 4.1.1.c, s.176)",
+          "sensitive": true,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 176,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sonucKodu",
+          "displayName": "Sonuc Kodu",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Result code; 0000 means success, any other value is an error (s.176)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 176,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "sonucMesaji",
+          "displayName": "Sonuc Mesaji",
+          "type": "string",
+          "enumRef": null,
+          "required": false,
+          "length": null,
+          "description": "Human-readable result message accompanying the result code (s.176)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 176,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        }
+      ],
+      "status": "reviewed"
+    },
+    {
+      "id": "YesilKartliSevkliHastaGirisDVO",
+      "domain": "hasta-kabul",
+      "direction": "input",
+      "sourceRefs": [
+        {
+          "id": "medula-hastane-guide-3-1-1-2026-10-19",
+          "sourceType": "official-guide",
+          "guideVersion": "3.1.1",
+          "fetchedAt": "2026-11-15",
+          "page": 176,
+          "section": "Tablo 4.1.12.a - YesilKartliSevkliHastaGirisDVO",
+          "confidence": "extracted"
+        }
+      ],
+      "fields": [
+        {
+          "name": "hastaTCKNo",
+          "displayName": "Hasta TCK No",
+          "type": "string",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "Patient TCK number (s.176)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": true,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 176,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
+        },
+        {
+          "name": "tesisKodu",
+          "displayName": "Tesis Kodu",
+          "type": "integer",
+          "enumRef": null,
+          "required": true,
+          "length": null,
+          "description": "GSS-assigned institution code (s.176)",
+          "sensitive": false,
+          "syntheticOnlyRecommended": false,
+          "sourceRefs": [
+            {
+              "id": "medula-hastane-guide-3-1-1-2026-10-19",
+              "sourceType": "official-guide",
+              "guideVersion": "3.1.1",
+              "page": 176,
+              "confidence": "extracted"
+            }
+          ],
+          "conditionalRequired": [],
+          "introducedIn": "0.12.0",
+          "deprecatedIn": null
         }
       ],
       "status": "reviewed"
