@@ -311,6 +311,73 @@ export class Sandbox {
         },
       ];
     }
+    if (outputDvo === "BasvuruTakipOkuCevapDVO") {
+      // Tablo 4.1.7.c: the takip list of the read application.
+      response["basvuruTakip"] = [
+        {
+          takipNo:
+            this.state.identifiers.get("takipNo") ?? "SYNTHETIC_TAKIPNO_000001",
+          takipFaturaDurumu: "0",
+        },
+      ];
+    }
+    if (outputDvo === "HastaYatisOkuCevapDVO") {
+      // Tablo 4.1.6.c: one sample hospitalization row.
+      response["basvuruYatisBilgileri"] = [
+        {
+          baslangicTarihi: "01.11.2026",
+          bitisTarihi: "01.12.2026",
+          durum: "0",
+        },
+      ];
+    }
+    if (outputDvo === "KemikIligiTCIleOkuCevapDVO") {
+      // Tablo 4.1.19.b: one sample bone-marrow admission row echoing the TC.
+      response["kemikIligiCevapDVO"] = [
+        {
+          hastaTcNo:
+            typeof request["tcNo"] === "string" ? request["tcNo"] : null,
+          islemTarihi: "01.11.2026",
+          islemKodu: "SYNTHETIC_ISLEM_KODU",
+          aktifPasif: "1",
+          bildirimNo: this.state.identifiers.get("bildirimNo") ?? 1,
+          sonucKodu: "0000",
+          sonucMesaji: "Islem basari ile tamamlandi.",
+        },
+      ];
+    }
+    if (outputDvo === "YesilKartliSevkliHastaCevapDVO") {
+      // Tablo 4.1.12.c: one sample referral row.
+      response["yesilKartliHastaSevkBilgileriDVO"] = [
+        {
+          sevkEdilenBransKodu: "1",
+          sevkEdenTesisKodu: 1,
+          sevkEdilmeTarihi: "01.11.2026",
+          takipNo:
+            this.state.identifiers.get("takipNo") ?? "SYNTHETIC_TAKIPNO_000001",
+        },
+      ];
+    }
+    if (outputDvo === "FaturaOkuCevapDVO") {
+      // s.245: delivery numbers echo back as an array, plus one sample
+      // invoice-detail row (Tablo 4.2.4.c).
+      const teslim =
+        typeof request["faturaTeslimNo"] === "string"
+          ? request["faturaTeslimNo"]
+          : null;
+      response["faturaTeslimNo"] = teslim ? [teslim] : [];
+      response["faturaDetaylari"] = [
+        {
+          aciklama: null,
+          protokolNo: null,
+          taburcuKodu: null,
+          takipNo:
+            this.state.identifiers.get("takipNo") ?? "SYNTHETIC_TAKIPNO_000001",
+          takipToplamTutar: 0,
+          islemDetaylari: [],
+        },
+      ];
+    }
     this.composeFromOutputDvo(method, request, response);
     return response;
   }

@@ -161,7 +161,12 @@ describe("sandbox invoice registration (M3)", () => {
     const saved = env.sandbox.call(FATURA_KAYIT, faturaRequest(env.basvuru));
     const result = env.sandbox.call(FATURA_OKU, okuRequest(saved, env.basvuru));
     expect(result["sonucKodu"]).toBe("0000");
-    expect(result["faturaTeslimNo"]).toBe(saved["faturaTeslimNo"]);
+    // Guide s.245: the read returns the delivery numbers as an array,
+    // plus one composed invoice-detail row.
+    expect(result["faturaTeslimNo"]).toEqual([saved["faturaTeslimNo"]]);
+    const rows = result["faturaDetaylari"] as Array<Record<string, unknown>>;
+    expect(rows).toHaveLength(1);
+    expect(rows[0]?.["takipNo"]).toBeTruthy();
   });
 
   it("rejects a read against a missing invoice (SANDBOX_1001)", () => {
